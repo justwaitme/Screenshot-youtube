@@ -1,24 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react";
+import {nanoid} from 'nanoid';
+import Split from "react-split";
+import Data from './data';
+import Editor from './components/Editor';
+import Sidebar from './components/Sidebar';
+
 
 function App() {
+  const [notes, setNotes] = useState([]);
+  const [currentNoteId, setCurrentNoteId] = useState((notes[0] && notes[0].id) || "");
+
+  function createNewNote(){
+    const newNote = {
+      id : nanoid(),
+      body: "#Type you Markdown Text Here"
+    }
+
+    setNotes(prevNotes =>[newNote,...prevNotes]);
+    setCurrentNoteId(newNote.id);
+
+  }
+
+  function updateNote(text) {
+    setNotes(oldNotes => oldNotes.map(oldNote => {
+        return oldNote.id === currentNoteId
+            ? { ...oldNote, body: text }
+            : oldNote
+    }))
+}
+
+  function findCurrentNote(){
+    return notes.find(note=>{
+      return note.id === currentNoteId
+    }) || notes[0]
+  }
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main>
+
+    </main>
   );
 }
 
